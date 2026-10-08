@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#008080">
+  <title>VaporOS 98</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="desktop">
+    <div class="sun"></div>
+    <div class="grid"></div>
+
+    <div id="icons">
+      <button class="icon" data-app="paint"><span>🎨</span>Paint</button>
+      <button class="icon" data-app="player"><span>💿</span>Player</button>
+      <button class="icon" data-app="radio"><span>📻</span>Rádio</button>
+      <button class="icon" data-app="gallery"><span>🖼️</span>Galeria</button>
+    </div>
+  </div>
+
+  <div id="start-menu" class="hidden">
+    <div class="side"><b>Vapor</b>OS 98</div>
+    <ul>
+      <li data-app="paint">🎨 Paint</li>
+      <li data-app="player">💿 Player</li>
+      <li data-app="radio">📻 Rádio</li>
+      <li data-app="gallery">🖼️ Galeria</li>
+      <li class="sep"></li>
+      <li id="shutdown">⏻ Desligar...</li>
+    </ul>
+  </div>
+
+  <div id="taskbar">
+    <button id="start-btn"><b>⊞ Iniciar</b></button>
+    <div id="tasks"></div>
+    <div id="tray"><span id="clock">00:00</span></div>
+  </div>
+    <script src="paint.js"></script>
+  <script src="gallery.js"></script>
+  <script src="player.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

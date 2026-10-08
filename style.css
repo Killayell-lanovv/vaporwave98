@@ -1,0 +1,235 @@
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html, body { margin: 0; height: 100%; overflow: hidden; }
+body { font-family: "Tahoma", "MS Sans Serif", Arial, sans-serif; font-size: 14px; user-select: none; }
+
+:root {
+  --face: #c0c0c0;
+  --light: #ffffff;
+  --shadow: #808080;
+  --dark: #000000;
+}
+
+/* Efeito 3D clássico do Windows 98 */
+.raised {
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light),
+              inset -2px -2px var(--shadow), inset 2px 2px #dfdfdf;
+}
+.sunken {
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--light), inset 1px 1px var(--shadow),
+              inset -2px -2px #dfdfdf, inset 2px 2px var(--dark);
+}
+
+/* ===== Área de trabalho vaporwave ===== */
+#desktop {
+  position: fixed; inset: 0 0 40px 0;
+  background: linear-gradient(180deg, #ff71ce 0%, #b967ff 45%, #05ffa1 100%);
+  overflow: hidden;
+}
+.sun {
+  position: absolute; left: 50%; top: 22%;
+  width: 55vmin; height: 55vmin; transform: translateX(-50%);
+  border-radius: 50%;
+  background: linear-gradient(180deg, #fffb96 0%, #ff71ce 100%);
+  -webkit-mask: repeating-linear-gradient(180deg, #000 0 14px, transparent 14px 18px);
+          mask: repeating-linear-gradient(180deg, #000 0 14px, transparent 14px 18px);
+  opacity: .9;
+}
+.grid {
+  position: absolute; left: -50%; right: -50%; bottom: 0; height: 40%;
+  background:
+    linear-gradient(rgba(1,205,254,.9) 2px, transparent 2px) 0 0 / 60px 40px,
+    linear-gradient(90deg, rgba(1,205,254,.9) 2px, transparent 2px) 0 0 / 60px 40px,
+    #1a0b3d;
+  transform: perspective(300px) rotateX(55deg); transform-origin: top;
+}
+
+/* ===== Ícones ===== */
+#icons { position: absolute; top: 12px; left: 8px; display: flex; flex-direction: column; flex-wrap: wrap;
+         gap: 10px; max-height: calc(100% - 20px); }
+.icon {
+  width: 78px; padding: 6px 2px; background: none; border: 1px dotted transparent;
+  color: #fff; font: inherit; font-size: 13px; text-shadow: 1px 1px #000; text-align: center; cursor: pointer;
+}
+.icon span { display: block; font-size: 36px; margin-bottom: 2px; filter: drop-shadow(2px 2px 0 rgba(0,0,0,.4)); }
+.icon:active, .icon:focus { border-color: #fff; background: rgba(0,0,128,.45); outline: none; }
+
+/* ===== Barra de tarefas ===== */
+#taskbar {
+  position: fixed; left: 0; right: 0; bottom: 0; height: 40px;
+  padding: 3px 4px env(safe-area-inset-bottom, 0); display: flex; align-items: center; gap: 6px;
+  background: var(--face); box-shadow: inset 0 1px var(--light), inset 0 2px #dfdfdf;
+  z-index: 1000;
+}
+#start-btn, .task-btn {
+  height: 32px; padding: 0 10px; font: inherit; color: #000; border: 0; cursor: pointer;
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px #dfdfdf;
+}
+#start-btn:active, #start-btn.active, .task-btn.active {
+  box-shadow: inset -1px -1px var(--light), inset 1px 1px var(--dark), inset -2px -2px #dfdfdf, inset 2px 2px var(--shadow);
+}
+#tasks { flex: 1; display: flex; gap: 4px; overflow: hidden; }
+#tray {
+  height: 32px; padding: 0 12px; display: flex; align-items: center;
+  box-shadow: inset 1px 1px var(--shadow), inset -1px -1px var(--light);
+}
+
+/* ===== Menu Iniciar ===== */
+#start-menu {
+  position: fixed; left: 3px; bottom: 42px; width: 230px; z-index: 1001; display: flex;
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px #dfdfdf;
+  padding: 3px;
+}
+#start-menu.hidden { display: none; }
+#start-menu .side {
+  width: 32px; background: linear-gradient(0deg, #ff71ce, #01cdfe); color: #fff;
+  writing-mode: vertical-rl; transform: rotate(180deg); text-align: left; padding: 8px 4px; font-size: 18px; letter-spacing: 1px;
+}
+#start-menu ul { list-style: none; margin: 0; padding: 0; flex: 1; }
+#start-menu li { padding: 12px 14px; cursor: pointer; font-size: 15px; }
+#start-menu li:active { background: #000080; color: #fff; }
+#start-menu li.sep { height: 2px; padding: 0; margin: 4px 2px; background: none;
+                     box-shadow: inset 0 1px var(--shadow), inset 0 -1px var(--light); }
+/* ===== Janelas ===== */
+.win {
+  position: absolute; display: flex; flex-direction: column; padding: 3px;
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px #dfdfdf,
+              4px 4px 0 rgba(0,0,0,.35);
+}
+.win.max { left: 0 !important; top: 0 !important; width: 100% !important; height: 100% !important; }
+.win.min { display: none; }
+
+.titlebar {
+  height: 28px; padding: 0 3px 0 6px; display: flex; align-items: center; gap: 6px;
+  color: #fff; font-weight: bold; touch-action: none; cursor: default;
+  background: linear-gradient(90deg, #ff71ce, #01cdfe);
+}
+.win:not(.focused) .titlebar { background: linear-gradient(90deg, #808080, #b5b5b5); }
+.titlebar .t-text { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+
+.t-btns { display: flex; gap: 2px; }
+.t-btns button {
+  width: 26px; height: 22px; padding: 0; border: 0; font: bold 13px Tahoma, sans-serif; color: #000; cursor: pointer;
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px #dfdfdf;
+}
+.t-btns button:active {
+  box-shadow: inset -1px -1px var(--light), inset 1px 1px var(--dark), inset -2px -2px #dfdfdf, inset 2px 2px var(--shadow);
+}
+
+.win-body {
+  flex: 1; margin-top: 3px; overflow: auto; position: relative; background: var(--face);
+  box-shadow: inset -1px -1px var(--light), inset 1px 1px var(--shadow), inset -2px -2px #dfdfdf, inset 2px 2px var(--dark);
+}
+.placeholder { padding: 16px; line-height: 1.5; }
+/* ===== Paint ===== */
+.paint { display: flex; flex-direction: column; height: 100%; }
+.p-tools { display: flex; flex-wrap: wrap; gap: 2px; padding: 3px; flex: none; }
+.p-tools button {
+  width: 38px; height: 34px; padding: 0; font-size: 18px; border: 0; cursor: pointer; color: #000;
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px #dfdfdf;
+}
+.p-tools button.sel, .p-tools button:active {
+  box-shadow: inset -1px -1px var(--light), inset 1px 1px var(--dark), inset -2px -2px #dfdfdf, inset 2px 2px var(--shadow);
+  background: repeating-conic-gradient(#fff 0 25%, #c0c0c0 0 50%) 0 0 / 4px 4px;
+}
+.p-canvaswrap {
+  flex: 1; min-height: 0; overflow: hidden; background: #808080;
+  display: flex; align-items: center; justify-content: center; padding: 4px;
+}
+.p-canvaswrap canvas { flex: none; background: #fff; touch-action: none; cursor: crosshair; }
+.p-bottom { flex: none; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 4px; }
+.p-cur { width: 34px; height: 34px; }
+.p-palette { display: grid; grid-template-columns: repeat(14, 22px); }
+.p-palette .sw { width: 22px; height: 22px; box-shadow: inset 1px 1px var(--shadow), inset -1px -1px var(--light); cursor: pointer; }
+.p-size { display: flex; align-items: center; gap: 4px; }
+.p-size input { width: 90px; }
+.p-bottom input[type=color] { width: 36px; height: 30px; padding: 0; border: 0; background: none; }
+.p-status { flex: none; padding: 3px 6px; font-size: 12px; }
+/* ===== Botão padrão Win98 ===== */
+.btn {
+  min-height: 30px; padding: 0 10px; font: inherit; color: #000; border: 0; cursor: pointer;
+  background: var(--face);
+  box-shadow: inset -1px -1px var(--dark), inset 1px 1px var(--light), inset -2px -2px var(--shadow), inset 2px 2px #dfdfdf;
+}
+.btn:active {
+  box-shadow: inset -1px -1px var(--light), inset 1px 1px var(--dark), inset -2px -2px #dfdfdf, inset 2px 2px var(--shadow);
+}
+
+/* ===== Galeria ===== */
+.gal { position: relative; height: 100%; display: flex; flex-direction: column; }
+.g-bar { flex: none; display: flex; gap: 4px; align-items: center; padding: 4px; }
+.g-count { margin-left: auto; font-size: 12px; padding-right: 4px; }
+.g-grid {
+  flex: 1; min-height: 0; overflow: auto; padding: 4px; background: #fff;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 4px; align-content: start;
+}
+.g-th { aspect-ratio: 1; padding: 0; border: 2px solid var(--shadow); background: #eee; cursor: pointer; overflow: hidden; }
+.g-th:active { border-color: #ff71ce; }
+.g-th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.g-empty { grid-column: 1 / -1; text-align: center; padding: 30px 10px; color: #555; line-height: 1.6; }
+.g-view { position: absolute; inset: 0; z-index: 5; display: flex; flex-direction: column; background: #1a0b3d; }
+.g-view.hidden { display: none; }
+.g-top, .g-nav { flex: none; display: flex; gap: 4px; align-items: center; padding: 4px; background: var(--face); }
+.g-name { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 12px; }
+.g-nav { justify-content: center; gap: 20px; }
+.g-nav .btn { min-width: 70px; }
+.g-stage { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; touch-action: pan-y; }
+.g-stage img { max-width: 100%; max-height: 100%; object-fit: contain; }
+/* ===== Botão pressionado (liga/desliga) ===== */
+.btn.sel {
+  box-shadow: inset -1px -1px var(--light), inset 1px 1px var(--dark), inset -2px -2px #dfdfdf, inset 2px 2px var(--shadow);
+  background: repeating-conic-gradient(#fff 0 25%, #c0c0c0 0 50%) 0 0 / 4px 4px;
+}
+
+/* ===== Player ===== */
+.pl { display: flex; flex-direction: column; height: 100%; padding: 6px; gap: 6px; }
+.pl-screen { flex: none; padding: 4px; background: #0d0221; }
+.pl-screen canvas { width: 100%; height: 80px; display: block; }
+.pl-title { color: #05ffa1; font-family: "Courier New", monospace; font-size: 13px; margin-top: 4px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.pl-seek { flex: none; display: flex; align-items: center; gap: 6px; font-size: 12px; }
+.pl-prog { flex: 1; min-width: 0; }
+.pl-ctrl { flex: none; display: flex; gap: 4px; justify-content: center; }
+.pl-ctrl .btn { min-width: 46px; min-height: 40px; font-size: 16px; padding: 0 6px; }
+.pl-ctrl .pl-play { min-width: 60px; }
+.pl-vol { flex: none; display: flex; align-items: center; gap: 6px; }
+.pl-volr { flex: 1; min-width: 0; }
+.pl-list { flex: 1; min-height: 0; overflow: auto; margin: 0; padding: 0; list-style: none; background: #fff; }
+.pl-list li { display: flex; gap: 6px; align-items: center; padding: 8px 6px; cursor: pointer; border-bottom: 1px dotted #bbb; }
+.pl-list li.on { background: #000080; color: #fff; }
+.pl-list .t { flex: 1; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.pl-list .x { border: 0; background: none; color: inherit; cursor: pointer; font-size: 14px; padding: 4px 8px; }
+.pl-list li.pl-empty { color: #555; cursor: default; line-height: 1.5; }
+.radio98-corpo {
+  height: 100%; box-sizing: border-box;
+  padding: 10px; display: flex; flex-direction: column; gap: 10px;
+  font-family: Tahoma, "MS Sans Serif", sans-serif; font-size: 14px; color: #000;
+}
+.radio98-btn {
+  background: #c0c0c0; color: #000; font: inherit;
+  border: 2px solid; border-color: #fff #404040 #404040 #fff;
+  padding: 6px 12px; min-height: 36px;
+}
+.radio98-btn:active { border-color: #404040 #fff #fff #404040; }
+.radio98-lista {
+  flex: 1; min-height: 80px; overflow-y: auto;
+  list-style: none; margin: 0; padding: 2px; background: #fff;
+  border: 2px solid; border-color: #404040 #fff #fff #404040;
+}
+.radio98-lista li { padding: 8px 6px; cursor: pointer; }
+.radio98-lista li small { display: block; opacity: .7; }
+.radio98-lista li.ativa { background: #b967ff; color: #fff; }
+.radio98-status {
+  padding: 4px 6px; background: #000; color: #05ffa1;
+  font-family: "Courier New", monospace;
+  border: 2px solid; border-color: #404040 #fff #fff #404040;
+}
+.radio98-controles { display: flex; gap: 10px; align-items: center; }
+.radio98-controles input[type=range] { flex: 1; }
+.radio98-rodape { font-size: 11px; opacity: .7; }
